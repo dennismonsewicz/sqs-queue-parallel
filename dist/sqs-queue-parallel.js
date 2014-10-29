@@ -61,6 +61,7 @@
             }
             return self.client.receiveMessage((options = {
               QueueUrl: self.url,
+              AttributeNames: ["All"],
               MaxNumberOfMessages: self.config.maxNumberOfMessages,
               WaitTimeSeconds: self.config.waitTimeSeconds
             }, self.config.visibilityTimeout != null ? options.VisibilityTimeout = self.config.visibilityTimeout : void 0, options), next);
@@ -82,14 +83,12 @@
                 name: self.config.name,
                 next: next,
                 deleteMessage: function(cb) {
-                  next();
                   return self.deleteMessage(message.ReceiptHandle, cb);
                 },
                 delay: function(timeout, cb) {
                   return self.changeMessageVisibility(message.ReceiptHandle, timeout, cb);
                 },
                 changeMessageVisibility: function(timeout, cb) {
-                  next();
                   return self.changeMessageVisibility(message.ReceiptHandle, timeout, cb);
                 }
               });
